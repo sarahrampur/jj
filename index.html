@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f2e9" />
+    <meta name="description" content="A little window into what Sarah is reading, watching, and listening to." />
+    <title>Sarah's little now</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="wordmark" href="#top" aria-label="Sarah, home">s<span>.</span></a>
+        <span class="top-note"><span class="live-dot"></span> a small collection of current favorites</span>
+        <a class="about-link" href="mailto:hello@example.com">say hello <span aria-hidden="true">↗</span></a>
+      </header>
+
+      <main id="top">
+        <section class="intro" aria-labelledby="page-title">
+          <div class="eyebrow"><span class="eyebrow-line"></span> THE CURRENT CHAPTER</div>
+          <h1 id="page-title">A little bit of<br /><em>what I'm into.</em></h1>
+          <p class="intro-copy">Things I'm reading, watching, and listening to lately. A tiny scrapbook of the good stuff.</p>
+          <div class="intro-bottom"><span>UPDATED WHEN THE MOOD STRIKES</span><span class="star-mark" aria-hidden="true">✳</span></div>
+        </section>
+
+        <section class="shelf" aria-label="Currently into">
+          <article class="card book-card">
+            <div class="card-heading"><span class="number">01</span><span class="category">ON MY NIGHTSTAND</span><span class="card-icon" aria-hidden="true">↗</span></div>
+            <div class="book-content">
+              <div class="book-cover-wrap">
+                <img id="book-cover" class="book-cover" alt="Book cover" hidden />
+                <div id="book-placeholder" class="book-placeholder"><span class="cover-kicker">CURRENTLY<br />READING</span><span class="cover-title">A story<br />in progress</span><span class="cover-rule"></span><span class="cover-author">SARAH'S BOOKSHELF</span></div>
+              </div>
+              <div class="book-info"><span class="small-label">CURRENTLY READING</span><h2 id="book-title">A book in progress</h2><p id="book-author" class="muted">A good story, lately</p><p id="book-note" class="book-note">The one keeping me up for just one more chapter.</p><a id="goodreads-link" class="text-link" target="_blank" rel="noreferrer">FIND ME ON GOODREADS <span aria-hidden="true">↗</span></a></div>
+            </div>
+            <div class="card-foot"><span>01 — WORDS & WORLDS</span><span>✳</span></div>
+          </article>
+
+          <article class="card video-card">
+            <div class="card-heading"><span class="number">02</span><span class="category">THE ONE I LIKED</span><span class="card-icon" aria-hidden="true">↗</span></div>
+            <div class="media-frame video-frame" id="video-frame"><div class="media-placeholder video-placeholder"><span class="play-button">▶</span><span>YOUR LATEST YOUTUBE LIKE</span><small>Add a video ID in <code>site-data.js</code></small></div></div>
+            <div class="media-copy"><div><span class="small-label">ON REPEAT (VISUALLY)</span><h2 id="video-title">A good thing I watched</h2><p id="video-channel" class="muted">A tiny internet favorite</p></div><a id="youtube-link" class="round-link" target="_blank" rel="noreferrer" aria-label="Watch on YouTube">↗</a></div>
+            <div class="card-foot"><span>02 — LITTLE INTERNET MOMENTS</span><span>✳</span></div>
+          </article>
+
+          <article class="card music-card">
+            <div class="card-heading"><span class="number">03</span><span class="category">LAST ON THE PLAYLIST</span><span class="card-icon" aria-hidden="true">↗</span></div>
+            <div class="music-art" aria-hidden="true"><div class="music-orbit orbit-one"></div><div class="music-orbit orbit-two"></div><div class="music-sun"></div><span class="music-note note-one">♪</span><span class="music-note note-two">♫</span><span class="art-caption">SIDE A<br />ON REPEAT</span></div>
+            <div class="media-copy music-copy"><div><span class="small-label">THE MOST RECENT SPIN</span><h2 id="song-title">One more song</h2><p id="song-artist" class="muted">The soundtrack to right now</p></div><a id="apple-link" class="round-link" target="_blank" rel="noreferrer" aria-label="Listen on Apple Music">↗</a></div>
+            <div id="music-embed" class="music-embed"></div>
+            <div class="card-foot"><span>03 — SOUNDTRACKING THE DAY</span><span>✳</span></div>
+          </article>
+        </section>
+
+        <footer class="footer"><span>MADE OF SMALL THINGS I LOVE</span><span class="footer-heart">♥</span><span>© <span id="year"></span> SARAH</span></footer>
+      </main>
+    </div>
+    <script src="site-data.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
