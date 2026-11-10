@@ -9,6 +9,7 @@
       return '';
     }
   };
+
   const setText = (id, value) => { if (value) $(id).textContent = value; };
   const setLink = (id, href) => {
     const url = safeUrl(href);
@@ -25,40 +26,33 @@
   const addBook = (book) => {
     if (!book?.title) return;
 
-    const bookCover = document.querySelector('.book-cover-wrap');
-    const bookTitle = document.querySelector('.book-info h2');
-    const bookMeta = document.querySelector('.book-info .muted');
-    const bookNote = document.querySelector('.book-note');
-    const cardLink = document.querySelector('.book-card .card-icon');
+    const coverWrap = document.querySelector('.book-cover-wrap');
+    const title = document.querySelector('.book-info h2');
+    const author = document.querySelector('.book-info .muted');
+    const note = document.querySelector('.book-note');
+    const bookLink = document.querySelector('.book-card .card-icon');
 
-    if (bookCover) {
+    if (coverWrap) {
       if (book.cover) {
-        bookCover.style.backgroundImage = `linear-gradient(180deg, rgba(7,27,54,0.06), rgba(7,27,54,0.35)), url("${book.cover.replace(/["\\]/g, '')}")`;
-        bookCover.classList.add('has-cover');
+        const image = document.createElement('img');
+        image.src = safeUrl(book.cover);
+        image.alt = `Cover of ${book.title}`;
+        image.loading = 'lazy';
+        image.style.cssText = 'display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit';
+        if (image.src) coverWrap.replaceChildren(image);
       } else {
-        bookCover.style.backgroundImage = '';
-        bookCover.classList.remove('has-cover');
+        coverWrap.style.backgroundImage = '';
+        coverWrap.classList.remove('has-cover');
       }
     }
 
-    if (bookTitle) {
-      bookTitle.innerHTML = book.title.replace(/\n/g, '<br>');
-    }
+    if (title) title.innerHTML = book.title.replace(/\n/g, '<br>');
+    if (author) author.textContent = book.author || 'Currently reading';
+    if (note) note.textContent = book.added ? `Added ${book.added}` : 'See what I’m reading';
 
-    if (bookMeta) {
-      bookMeta.textContent = book.author || 'Currently reading';
-    }
-
-    if (bookNote) {
-      bookNote.textContent = book.added ? `Added ${book.added}` : 'See what I’m reading';
-    }
-
-    if (cardLink) {
-      const bookUrl = safeUrl(book.url || data.goodreadsUrl);
-      if (bookUrl) cardLink.href = bookUrl;
-    }
-
-    setLink('goodreads-link', book.url || data.goodreadsUrl);
+    const bookUrl = safeUrl(book.url || data.goodreadsUrl);
+    if (bookUrl && bookLink) bookLink.href = bookUrl;
+    if (bookUrl) setLink('goodreads-link', bookUrl);
   };
 
   const addVideo = (video) => {
@@ -81,14 +75,18 @@
     setText('song-title', song.title);
     setText('song-artist', song.artist);
     setLink('apple-link', song.url || data.appleMusicPlaylistUrl);
-    if (song.albumArt) {
-      $('music-art').style.backgroundImage = `linear-gradient(180deg, #071b36aa, #071b3655), url("${song.albumArt.replace(/["\\]/g, '')}")`;
+
+    const albumArt = safeUrl(song.albumArt);
+    if (albumArt) {
+      $('music-art').style.backgroundImage = `linear-gradient(180deg, #071b36aa, #071b3655), url("${albumArt}")`;
       $('music-art').classList.add('has-art');
     }
+
     setText('song-added', song.added ? `ADDED ${song.added}` : 'LATEST PLAYLIST ADDITION');
-    if (song.embedUrl) {
+    const embedUrl = safeUrl(song.embedUrl);
+    if (embedUrl) {
       const frame = document.createElement('iframe');
-      frame.src = song.embedUrl;
+      frame.src = embedUrl;
       frame.title = `Listen to ${song.title} on Apple Music`;
       frame.allow = 'autoplay *; encrypted-media *;';
       frame.loading = 'lazy';
@@ -97,17 +95,23 @@
   };
 
   fetch('/api/latest')
-    .then((response) => { if (!response.ok) throw new Error('Could not load playlist updates'); return response.json(); })
+    .then((response) => {
+      if (!response.ok) throw new Error('Could not load playlist updates');
+      return response.json();
+    })
     .then((latest) => {
       addBook(latest.goodreads);
       addVideo(latest.youtube);
       addSong(latest.appleMusic);
-      if (latest.updatedAt) setText('last-updated', `PLAYLISTS CHECKED ${new Date(latest.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase()}`);
+      if (latest.updatedAt) {
+        setText('last-updated', `PLAYLISTS CHECKED ${new Date(latest.updatedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }).toUpperCase()}`);
+      }
     })
     .catch(() => {
       setText('video-title', 'Open the playlist to see what’s new');
       setText('song-title', 'Open the playlist to see what’s new');
       setText('video-channel', 'Playlist updates are temporarily unavailable');
       setText('song-artist', 'Playlist updates are temporarily unavailable');
+      setText('book-note', 'Open Goodreads to see what’s new');
     });
 })();
